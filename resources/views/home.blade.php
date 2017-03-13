@@ -28,6 +28,7 @@
             body {
                 font-size: 15px;
                 line-height: 24px;
+                background-color: #EEE;
             }
         </style>
     </head>

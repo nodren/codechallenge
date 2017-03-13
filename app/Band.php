@@ -10,4 +10,11 @@ class Band extends Model
 	{
 		return $this->hasMany('App\Album');
 	}
+
+	public function setStartDateAttribute($value)
+	{
+		if ($value !== null) {
+			$this->attributes['start_date'] = date('Y-m-d', strtotime($value));
+		}
+	}
 }

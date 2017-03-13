@@ -1,17 +1,20 @@
 import React from 'react';
-import { Route, Link, Switch } from 'react-router-dom'
+import { Route, Link, Switch, withRouter } from 'react-router-dom'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from 'material-ui/svg-icons/menu';
+import Text from 'material-ui/Text';
 import Drawer from 'material-ui/Drawer';
-import {List, ListItem} from 'material-ui/List';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
+import { List, ListItem, ListItemText } from 'material-ui/List';
 
-import { Grid } from 'react-flexbox-grid-aphrodite';
-import BandList from 'src/pages/bands/List';
-import AlbumList from 'src/pages/albums/List';
+import BandList from 'src/pages/BandList';
+import BandEdit from 'src/pages/BandEdit';
+import AlbumList from 'src/pages/AlbumList';
+import AlbumEdit from 'src/pages/AlbumEdit';
 
-export default class Base extends React.Component {
+class Base extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -33,29 +36,39 @@ export default class Base extends React.Component {
 		return (
 			<MuiThemeProvider>
 				<div>
-					<AppBar title="LiteracyPro Coding Challenge" onLeftIconButtonTouchTap={this.toggleMenu}/>
-					<Drawer open={this.state.open}>
-						<AppBar onLeftIconButtonTouchTap={this.toggleMenu} />
-						<List>
-							<ListItem><Link to="/" onClick={this.closeMenu}>Bands</Link></ListItem>
-							<ListItem><Link to="/albums" onClick={this.closeMenu}>Albums</Link></ListItem>
+					<AppBar style={ {position: 'relative'} }>
+						<Toolbar>
+							<IconButton contrast onClick={this.toggleMenu}>
+								<MenuIcon />
+							</IconButton>
+							<Text type="title" colorInherit>LiteracyPro Coding Challenge</Text>
+						</Toolbar>
+					</AppBar>
+					<Drawer open={this.state.open} onClick={this.toggleMenu} onRequestClose={this.closeMenu}>
+						<List style={ {width:250, flex: 'initial'} } padding={false}>
+							<ListItem button onClick={this.closeMenu} to="/" component={Link}>
+								<ListItemText primary="Bands" />
+							</ListItem>
+							<ListItem button onClick={this.closeMenu} to="/albums" component={Link}>
+								<ListItemText primary="Albums" />
+							</ListItem>
 						</List>
 					</Drawer>
-					<Grid fluid>
-						<Switch>
-							<Route path="/" exact component={BandList}/>
-							<Route path="/band/:bandId/albums" component={AlbumList}/>
-							<Route path="/albums/:bandId" component={AlbumList}/>
-							<Route path="/albums" component={AlbumList}/>
-							<Route component={() => (
-								<div>
-									Page Not Found
-								</div>
-							)}/>
-						</Switch>
-					</Grid>
+					<Switch>
+						<Route path="/" exact component={BandList}/>
+						<Route path="/bands/:bandId/albums" component={AlbumList}/>
+						<Route path="/bands/:bandId/edit" component={BandEdit}/>
+						<Route path="/albums/:albumId/edit" component={AlbumEdit}/>
+						<Route path="/albums" component={AlbumList}/>
+						<Route component={() => (
+							<div>
+								Page Not Found
+							</div>
+						)}/>
+					</Switch>
 				</div>
 			</MuiThemeProvider>
 		)
 	}
 }
+export default withRouter(Base);
