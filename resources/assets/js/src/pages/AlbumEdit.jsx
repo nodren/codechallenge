@@ -99,10 +99,9 @@ export default class AlbumEdit extends React.Component {
 							<Paper style={ {maxWidth: '500px', padding: '25px'} }>
 								<Text type="headline">Edit {this.state.record.name}</Text>
 								<TextField id="name" label="Name" value={this.state.record.name} onChange={this.updateValue('name')} required={true}/>
-								<FormControl id="band_id">
+								<FormControl id="band_id" required>
 									<InputLabel>Band</InputLabel>
 									<Input component="select" type="select" value={this.state.record.band_id} onChange={this.updateValue('band_id')} >
-										<option>Select</option>
 										{ this.state.bands.map((band) => {
 											return <option key={`band_select_${band.id}`} value={band.id}>{band.name}</option>
 										})}
